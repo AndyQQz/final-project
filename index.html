@@ -1,4 +1,4 @@
-<!-- THIS MIGHT BE FINAL -->
+<!-- FINAL BUT DOUBLE CHECKING -->
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -7,27 +7,26 @@
   <title>Andy's Virtual Kitty Playground</title>
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
   <style>
-    /* Super playful pastel colors */
     body {
-      background: #FFF8F0;               /* very light beige */
+      background: #FFF8F0; /* soft beige */
       font-family: 'Comic Sans MS', cursive, sans-serif;
       padding-top: 70px;
+      color: #2d3436;
     }
     .hero {
-      background: linear-gradient(135deg, #ff9a9e, #fad0c4);
-      color: #333;
+      background: linear-gradient(135deg, #a8edea, #fed6e3);
+      padding: 90px 20px;
       text-align: center;
-      padding: 80px 20px;
-      border-bottom: 8px solid #ffeaa7;
+      border-bottom: 10px solid #ffeaa7;
     }
-    .big-title { font-size: 4rem; font-weight: bold; color: #2d3436; }
-    .subtitle  { font-size: 1.8rem; color: #636e72; }
+    .big-title { font-size: 4.5rem; font-weight: bold; color: #2d3436; }
+    .subtitle  { font-size: 2rem; color: #2d3436; }
 
     .feature-card {
-      background: white;
-      border-radius: 20px;
-      box-shadow: 0 10px 20px rgba(0,0,0,0.1);
-      height: 280px;
+      background: #ffffff;
+      border-radius: 25px;
+      box-shadow: 0 12px 25px rgba(0,0,0,0.15);
+      height: 300px;
       display: flex;
       flex-direction: column;
       justify-content: center;
@@ -35,24 +34,32 @@
     }
     .feature-card:hover { transform: translateY(-15px); }
 
-    .card-title { font-size: 2.2rem; color: #2d3436; }
-    .card-text  { font-size: 1.3rem; color: #636e72; }
+    .card-title { font-size: 2.4rem; color: #2d3436; }
+    .card-text  { font-size: 1.4rem; color: #636e72; }
 
-    section { padding: 80px 0; display: none; background: #FFF8F0; }
+    section { padding: none; padding: 80px 0; background: #FFF8F0; }
     section:target { display: block; }
 
     .back-top {
       position: fixed;
       bottom: 30px;
       right: 30px;
-      display: none;            /* hidden at start */
-      width: 160px;
-      font-size: 1.4rem;
-      border-radius: 50px;
+      display: none;                 /* hidden until you scroll */
       background: #fd79a8;
       color: white;
+      font-size: 1.5rem;
+      width: 170px;
+      border-radius: 50px;
+      box-shadow: 0 6px 15px rgba(0,0,0,0.2);
     }
-    .cat-img { border-radius: 15px; box-shadow: 0 6px 15px rgba(0,0,0,0.15); }
+
+    .cat-img {
+      border-radius: 20px;
+      box-shadow: 0 8px 20px rgba(0,0,0,0.2);
+    }
+
+    .list-group-item { background: #f9e4b7; } /* light beige for lists */
+    }
   </style>
 </head>
 <body>
@@ -63,23 +70,18 @@
 
   <div class="container mt-5">
     <div class="row g-5 justify-content-center">
-      <!-- BUTTON 1 -->
       <div class="col-md-4">
         <a href="#loaders" class="feature-card text-decoration-none text-center p-4">
           <div class="card-title text-primary">Cat Loaders</div>
           <div class="card-text">Three different ways to get cute cats</div>
         </a>
       </div>
-
-      <!-- BUTTON 2 -->
       <div class="col-md-4">
         <a href="#order" class="feature-card text-decoration-none text-center p-4">
           <div class="card-title text-success">Order Digital Cat</div>
           <div class="card-text">Buy a virtual cat with fake info</div>
         </a>
       </div>
-
-      <!-- BUTTON 3 -->
       <div class="col-md-4">
         <a href="#account" class="feature-card text-decoration-none text-center p-4">
           <div class="card-title text-warning">Cat Account</div>
@@ -90,62 +92,197 @@
   </div>
 </div>
 
-<!-- SECTION 1 – Cat Loaders -->
+<!-- 1. Cat Loaders -->
 <section id="loaders" class="container">
   <h2 class="text-center mb-5 display-4 text-primary">Choose How to Load Cats</h2>
-  <div class="row g-4 text-center">
+  <div class="row g-5 text-center">
     <div class="col-md-4">
-      <button onclick="loadRandom()" class="btn btn-lg btn-outline-primary w-100 p-4">Random Cats</button>
+      <button onclick="loadRandom()" class="btn btn-lg btn-outline-primary w-100 py-4">Random Cats</button>
       <div id="random-cats" class="mt-4"></div>
     </div>
     <div class="col-md-4">
-      <button onclick="loadCute()" class="btn btn-lg btn-outline-success w-100 p-4">Cute Cats Only</button>
+      <button onclick="loadCute()" class="btn btn-lg btn-outline-success w-100 py-4">Cute Cats Only</button>
       <div id="cute-cats" class="mt-4"></div>
     </div>
     <div class="col-md-4">
-      <button onclick="loadMessages()" class="btn btn-lg btn-outline-warning w-100 p-4">Cats That Talk</button>
+      <button onclick="loadMessages()" class="btn btn-lg btn-outline-warning w-100 py-4">Cats That Talk</button>
       <div id="message-cats" class="mt-4"></div>
     </div>
   </div>
 </section>
 
-<!-- SECTION 2 – Order Digital Cat -->
+<!-- 2. Order Digital Cat -->
 <section id="order" class="container">
   <h2 class="text-center mb-5 display-4 text-success">Order a Digital Cat</h2>
-  <div class="alert alert-info">Use only fake information – this is just for fun!</div>
-  <form onsubmit="placeOrder(event)" class="col-md-8 mx-auto">
-    <!-- form fields same as before -->
-    ... (same code as last version – I kept it exactly) ...
+  <div class="alert alert-warning">Use only fake information – this is just a school project!</div>
+
+  <form onsubmit="placeOrder(event)" class="col-lg-6 mx-auto">
+    <div class="mb-3">
+      <label class="form-label">Cat Type</label>
+      <select id="cat-choice" class="form-select form-select-lg">
+        <option>Random</option>
+        <option>Cute</option>
+        <option>With Message</option>
+      </select>
+    </div>
+    <div class="mb-3">
+      <label class="form-label">Fake Credit Card (any numbers)</label>
+      <input type="text" id="fake-credit" class="form-control form-control-lg" required>
+    </div>
+    <div class="mb-4">
+      <label class="form-label">Fake Address</label>
+      <input type="text" id="fake-address" class="form-control form-control-lg" required>
+    </div>
+    <button type="submit" class="btn btn-success btn-lg w-100">Place Order</button>
+  >
   </form>
-  <h3 class="mt-5">All Orders (visible only when logged in)</h3>
-  <div id="orders-list" class="list-group"></div>
+
+  <h3 class="mt-5 text-center">All Orders (only visible when logged in)</h3>
+  <div id="orders-list" class="list-group mt-3"></div>
 </section>
 
-<!-- SECTION 3 – Account -->
+<!-- 3. Cat Account -->
 <section id="account" class="container">
-  <!-- same account code as last version -->
-  ... (kept exactly the same) ...
+  <h2 class="text-center mb-5 display-4 text-warning">Cat Account</h2>
+  <div class="row g-5">
+    <div class="col-md-6">
+      <h3>Sign Up</h3>
+      <form onsubmit="signUp(event)">
+        <div class="mb-3">
+          <label class="form-label">Fake Email (must have @ and .com)</label>
+          <input type="text" id="email" class="form-control form-control-lg" required>
+        </div>
+        <div class="mb-3">
+          <label class="form-label">Password</label>
+          <input type="password" id="password" class="form-control form-control-lg" required>
+        </div>
+        <button type="submit" class="btn btn-primary btn-lg w-100">Sign Up</button>
+      </form>
+    </div>
+    <div class="col-md-6">
+      <h3>Log In</h3>
+      <form onsubmit="login(event)">
+        <div class="mb-3">
+          <label class="form-label">Email</label>
+          <input type="text" id="login-email" class="form-control form-control-lg" required>
+        </div>
+        <div class="mb-3">
+          <label class="form-label">Password</label>
+          <input type="password" id="login-password" class="form-control form-control-lg" required>
+        </div>
+        <button type="submit" class="btn btn-success btn-lg w-100">Log In</button>
+      </form>
+    </div>
+  </div>
+
+  <h3 class="mt-5 text-center">All Accounts Created</h3>
+  <div id="accounts-list" class="list-group"></div>
 </section>
 
 <a href="#" class="btn back-top">Back to Top</a>
 
 <script>
-  // Show "Back to Top" button only when user scrolls inside a section
+  // Show back-to-top button only when scrolling
   window.onscroll = () => {
-    document.querySelector('.back-top').style.display = (window.scrollY > 500) ? 'block' : 'none';
+    document.querySelector('.back-top').style.display = (window.scrollY > 400) ? 'block' : 'none';
   };
 
-  // All the functions from the previous version (cat loaders, orders, accounts)
-  // I only copied them here so you can read and understand easily:
+  // 1. Cat Loaders
+  function loadRandom() {
+    fetch('https://cataas.com/api/cats?limit=4')
+      .then(r => r.json())
+      .then(cats => {
+        let html = '';
+        cats.forEach(cat => html += `<img src="https://cataas.com/cat/${cat.id}" class="cat-img img-fluid mb-4" alt="cat">`);
+        document.getElementById('random-cats').innerHTML = html;
+      });
+  }
 
-  function loadRandom() { /* same as before */ }
-  function loadCute()   { /* same as before */ }
-  function loadMessages(){ /* same as before */ }
-  function placeOrder(e){ /* same as before */ }
-  function signUp(e)    { /* same as before */ }
-  function login(e)     { /* same as before */ }
-  function showOrders() { /* same as before */ }
-  function showAccounts(){ /* same as before */ }
+  function loadCute() {
+    fetch('https://cataas.com/api/cats?tags=cute&limit=4')
+      .then(r => r.json())
+      .then(cats => {
+        let html = '';
+        cats.forEach(cat => html += `<img src="https://cataas.com/cat/${cat.id}" class="cat-img img-fluid mb-4" alt="cute cat">`);
+        document.getElementById('cute-cats').innerHTML = html;
+      });
+  }
+
+  function loadMessages() {
+    const msgs = ['Meow!', 'Purrfect', 'Hello Human', 'Love You'];
+    let html = '';
+    msgs.forEach(text => {
+      html += `<img src="https://cataas.com/cat/says/${encodeURIComponent(text)}?size=60&color=white" class="cat-img img-fluid mb-4" alt="${text}">`;
+    });
+    document.getElementById('message-cats').innerHTML = html;
+  }
+
+  // 2. Orders (needs login)
+  function placeOrder(e) {
+    e.preventDefault();
+    if (localStorage.getItem('loggedIn') !== 'true') {
+      alert('Please log in first!');
+      window.location.hash = '#account';
+      return;
+    }
+    const type = document.getElementById('cat-choice').value;
+    const card = document.getElementById('fake-credit').value;
+    const addr = document.getElementById('fake-address').value;
+
+    let orders = JSON.parse(localStorage.getItem('orders') || '[]');
+    orders.push({type, card, addr});
+    localStorage.setItem('orders', JSON.stringify(orders));
+    alert('Order placed!');
+    document.querySelector('#order form').reset();
+    showOrders();
+  }
+
+  function showOrders() {
+    if (localStorage.getItem('loggedIn') !== 'true') return;
+    let list = document.getElementById('orders-list');
+    let orders = JSON.parse(localStorage.getItem('orders') || '[]');
+    list.innerHTML = orders.map((o,i) => `<div class="list-group-item">Order ${i+1}: ${o.type} cat — Card ending ${o.card.slice(-4)} — ${o.addr}</div>`).join('');
+  }
+
+  // 3. Accounts
+  function signUp(e) {
+    e.preventDefault();
+    const email = document.getElementById('email').value.trim();
+    const pwd = document.getElementById('password').value;
+    if (!email.includes('@') || !email.endsWith('.com')) {
+      alert('Email needs @ and .com');
+      return;
+    }
+    let accounts = JSON.parse(localStorage.getItem('accounts') || '[]');
+    if (accounts.find(a => a.email === email)) {
+      alert('Email already used');
+      return;
+    }
+    accounts.push({email, pwd});
+    localStorage.setItem('accounts', JSON.stringify(accounts));
+    alert('Signed up! You can log in now');
+    showAccounts();
+  }
+
+  function login(e) {
+    e.preventDefault();
+    const email = document.getElementById('login-email').value;
+    const pwd = document.getElementById('login-password').value;
+    let accounts = JSON.parse(localStorage.getItem('accounts') || '[]');
+    if (accounts.find(a => a.email === email && a.pwd === pwd)) {
+      localStorage.setItem('loggedIn', 'true');
+      alert('Logged in!');
+      showOrders();
+    } else {
+      alert('Wrong email or password');
+    }
+  }
+
+  function showAccounts() {
+    let list = document.getElementById('accounts-list');
+    let accounts = JSON.parse(localStorage.getItem('accounts') || '[]');
+    list.innerHTML = accounts.map(a => `<div class="list-group-item">${a.email}</div>`).join('');
+  }
 
   // Run when page loads
   showAccounts();
