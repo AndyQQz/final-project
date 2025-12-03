@@ -1,4 +1,10 @@
-<!-- this should be final, it is if i dont update again-->
+<!-- this should be final, it is if i dont update again
+the project is basically 3 big buttons two with data one with the cataas default features 
+first button should load 3 different types of random cat images
+second button (requires third button first) orders virtual cat saves data with the address and credit card info 
+along with account information stuff
+third button is the whole account system sign up log in etc with email password username and pfp picture
+ -->
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -52,9 +58,6 @@
 <button class="btn back-top" onclick="window.scrollTo({top:0,behavior:'smooth'})">Back to Top</button>
 
 <script>
-// This whole project has 3 main features that use the CATAAS API and localStorage to remember accounts/orders.
-// Professor can see clean code, no event listeners on buttons (only onclick for simplicity), everything works!
-
 function openFeature(f) {
   const m = document.getElementById('main');
   m.style.display = 'block';
@@ -217,14 +220,25 @@ function showAccounts() {
   const list = document.getElementById('accounts-list');
   if (!list) return;
   const accounts = JSON.parse(localStorage.getItem('accounts')||'[]');
-  list.innerHTML = accounts.map(a => `
-    <div class="list-group-item d-flex align-items-center" style="cursor:pointer" onclick='localStorage.setItem("loggedIn",JSON.stringify(${JSON.stringify(a)}));alert("Logged in as ${a.username}!");showOrders()'>
+
+  list.innerHTML = accounts.map((a,i) => `
+    <div class="list-group-item d-flex align-items-center" style="cursor:pointer"
+         onclick="quickLogin(${i})">
       <img src="${a.pfp}" class="pfp">
       <div>
         <strong>${a.username}</strong><br>
         <small>${a.email}</small>
       </div>
     </div>`).join('');
+}
+
+function quickLogin(index) {
+  const accounts = JSON.parse(localStorage.getItem('accounts')||'[]');
+  const user = accounts[index];
+  if (!user) return;
+  localStorage.setItem('loggedIn', JSON.stringify(user));
+  alert("Logged in as " + user.username + "!");
+  showOrders();
 }
 
 // Back-to-top button
