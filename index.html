@@ -20,13 +20,13 @@
   .back-top { position:fixed; bottom:30px; right:30px; display:none; background:#fd79a8; color:white;
               width:170px; border-radius:50px; font-size:1.5rem; }
   .cat-img { border-radius:20px; box-shadow:0 8px 20px rgba(0,0,0,0.2); width:100%; }
-  .pfp { width:50px; height:50px; object-fit:cover; border-radius:50%; border:4px solid #ffeaa7; }
-  .list-group-item { background:#f9e4b7; }
+  .pfp { width:50px; height:50px; object-fit:cover; border-radius:50%; border:4px solid #ffeaa7; margin-right:15px; }
+  .list-group-item { background:#f9e4b7; padding:15px; border-radius:12px; margin-bottom:10px; }
 </style>
 </head>
 <body>
 
-<!-- HERO SECTION - 3 BIG BUTTONS -->
+<!-- MAIN MENU – 3 big buttons -->
 <div class="hero text-center">
   <h1 class="big-title">Andy's Virtual Kitty Playground</h1>
   <p class="subtitle">Explore the fun big three features using cat data from CATAAS !!!</p>
@@ -46,45 +46,46 @@
   </div>
 </div>
 
-<!-- MAIN CONTENT AREA - everything shows here -->
-<div id="main></div>
+<!-- ALL FEATURES SHOW HERE (so page stays short) -->
+<div id="main"></div>
 
 <button class="btn back-top" onclick="window.scrollTo({top:0,behavior:'smooth'})">Back to Top</button>
 
 <script>
-// CLEARS ALL OLD DATA SO YOU CAN TEST FRESH
-localStorage.clear();
+// extra notes: This whole project has 3 main features that use the CATAAS API 
+// and localStorage to remember accounts/orders. No event listeners on buttons 
+// (only onclick for simplicity),everything works!
 
-// MAIN FUNCTION - opens any feature without jumping
 function openFeature(f) {
   const m = document.getElementById('main');
   m.style.display = 'block';
-  m.scrollIntoView({behavior: 'smooth'}); // smooth scroll DOWN
+  m.scrollIntoView({behavior:'smooth'}); // smooth scroll down when clicking big buttons
 
-  // FEATURE 1 - CAT LOADERS
-  if (f === 'loaders') {
+  // FEATURE 1 – Cat Loaders (3 different API calls)
+  if (f==='loaders') {
     m.innerHTML = `
       <div class="container text-center">
         <h2 class="display-4 text-primary mb-5">Cat Loaders</h2>
-        <button onclick="loadRandom()" class="btn btn-outline-primary btn-lg m-3">Random Cats</button>
-        <button onclick="loadCute()" class="btn btn-outline-success btn-lg m-3">Cute Cats</button>
-        <button onclick="loadMessages()" class="btn btn-outline-warning btn-lg m-3">Talking Cats</button>
-        <div class="row row-cols-2 row-cols-md-3 g-4 mt-4" id="cat-display"></div>
+        <button onclick="loadRandom()" class="btn btn-outline-primary btn-lg m-3 px-5">Random Cats</button>
+        <button onclick="loadCute()" class="btn btn-outline-success btn-lg m-3 px-5">Cute Cats</button>
+        <button onclick="loadMessages()" class="btn btn-outline-warning btn-lg m-3 px-5">Talking Cats</button>
+        <div class="row row-cols-2 row-cols-md-3 g-4 mt-5" id="cat-display"></div>
       </div>`;
   }
 
-  // FEATURE 2 - ORDER DIGITAL CAT
-  else if (f === 'order') {
+  // FEATURE 2 – Order a Digital Cat (needs login)
+  else if (f==='order') {
+    const user = JSON.parse(localStorage.getItem('loggedIn') || 'null');
     m.innerHTML = `
       <div class="container">
-        <h2 class="text-success text-center mb-4">Order a Digital Cat</h2>
-        <div class="alert alert-warning text-center">Use fake info only!</div>
-        ${localStorage.loggedIn ? '' : '<p class="text-danger text-center fs-3">Log in first → go to Account</p>'}
+        <h2 class="text-success text-center mb-4 mb-4">Order a Digital Cat</h2>
+        <div class="alert alert-warning text-center">Use fake info only — just for fun!</div>
+        ${user ? '' : '<p class="text-danger text-center fs-3">Log in first → go to Account</p>'}
         <form onsubmit="placeOrder(event)" class="col-lg-6 mx-auto">
           <select id="cat-choice" class="form-select form-select-lg mb-3">
             <option>Random</option><option>Cute</option><option>Talking</option>
           </select>
-          <input type="text" id="fake-credit" placeholder="Fake card" class="form-control form-control-lg mb-3" required>
+          <input type="text" id="fake-credit" placeholder="Fake card number" class="form-control form-control-lg mb-3" required>
           <input type="text" id="fake-address" placeholder="Fake address" class="form-control form-control-lg mb-4" required>
           <button type="submit" class="btn btn-success btn-lg w-100">Place Order</button>
         </form>
@@ -94,8 +95,8 @@ function openFeature(f) {
     showOrders();
   }
 
-  // FEATURE 3 - ACCOUNT WITH USERNAME + PFP
-  else if (f === 'account') {
+  // FEATURE 3 – Account system with username + profile picture
+  else if (f==='account') {
     m.innerHTML = `
       <div class="container">
         <h2 class="text-warning text-center mb-5">Cat Account</h2>
@@ -103,14 +104,14 @@ function openFeature(f) {
           <div class="col-md-6">
             <h4>Sign Up</h4>
             <form onsubmit="signUp(event)">
-              <input type="text" id="username" placeholder="Username (unique)" class="form-control form-control-lg mb-3" required>
+              <input type="text" id="username" placeholder="Username (must be unique)" class="form-control form-control-lg mb-3" required>
               <input type="email" id="email" placeholder="email@cat.com" class="form-control form-control-lg mb-3" required>
               <input type="password" id="password" placeholder="password" class="form-control form-control-lg mb-3" required>
               <p class="mb-2">Choose your profile picture:</p>
-              <select id="pfp" class="form-select mb-3">
-                <option value="https://cataas.com/cat/says/Meow!?size=60&color=white">Meow!</option>
-                <option value="https://cataas.com/cat/says/Purrfect?size=60&color=white">Purrfect</option>
-                <option value="https://cataas.com/cat/says/Love You?size=60&color=white">Love You</option>
+              <select id="pfp" class="form-select mb-4">
+                <option value="https://cataas.com/cat/says/Meow!?size=100&color=white">Meow!</option>
+                <option value="https://cataas.com/cat/says/Purrfect?size=100&color=white">Purrfect</option>
+                <option value="https://cataas.com/cat/says/Love You?size=100&color=white">Love You</option>
               </select>
               <button type="submit" class="btn btn-primary btn-lg w-100">Sign Up</button>
             </form>
@@ -124,20 +125,20 @@ function openFeature(f) {
             </form>
           </div>
         </div>
-        <h4 class="mt-5 text-center">All Accounts (click any to log in)</h4>
+        <h4 class="mt-5 text-center">All Accounts (click to log in)</h4>
         <div id="accounts-list" class="list-group"></div>
       </div>`;
     showAccounts();
   }
 }
 
-// CAT LOADERS
+// CAT LOADERS (uses real API)
 function loadRandom() { loadCats(''); }
 function loadCute()   { loadCats('cute'); }
 function loadMessages() {
-  const msgs = ['Meow!','Purrfect','Hello','Love You'];
+  const msgs = ['Meow!','Purrfect','Love You','Hello Human'];
   let html = '';
-  msgs.forEach(t => html += `<div class="col"><img src="https://cataas.com/cat/says/${t}?size=80&color=white" class="cat-img"></div>`);
+  msgs.forEach(t => html += `<div class="col"><img src="https://cataas.com/cat/says/${encodeURIComponent(t)}?size=80&color=white" class="cat-img"></div>`);
   document.getElementById('cat-display').innerHTML = html;
 }
 function loadCats(tag) {
@@ -149,13 +150,16 @@ function loadCats(tag) {
   });
 }
 
-// ORDERS - now shows who ordered what
+// ORDERS – shows profile picture + username
 function placeOrder(e) {
   e.preventDefault();
-  if (!localStorage.loggedIn) return alert('Log in first!');
+  const user = JSON.parse(localStorage.getItem('loggedIn'));
+  if (!user) return alert('Log in first!');
+
   const orders = JSON.parse(localStorage.getItem('orders')||'[]');
   orders.push({
-    username: JSON.parse(localStorage.loggedIn).username,
+    username: user.username,
+    pfp: user.pfp,
     type: document.getElementById('cat-choice').value,
     card: document.getElementById('fake-credit').value.slice(-4),
     address: document.getElementById('fake-address').value
@@ -165,17 +169,20 @@ function placeOrder(e) {
   showOrders();
 }
 function showOrders() {
-  if (!localStorage.loggedIn) return;
   const list = document.getElementById('orders-list');
+  if (!list) return;
   const orders = JSON.parse(localStorage.getItem('orders')||'[]');
   list.innerHTML = orders.map(o => `
     <div class="list-group-item d-flex align-items-center">
-      <img src="${JSON.parse(localStorage.loggedIn).pfp}" class="pfp me-3">
-      <strong>${o.username}</strong> ordered a <strong>${o.type}</strong> cat — ends ${o.card} — ${o.address}
+      <img src="${o.pfp}" class="pfp">
+      <div>
+        <strong>${o.username}</strong> ordered a <strong>${o.type}</strong> cat<br>
+        <small>Card ends ${o.card} • ${o.address}</small>
+      </div>
     </div>`).join('');
 }
 
-// ACCOUNTS - now with username + pfp
+// ACCOUNTS – username + pfp + click to log in
 function signUp(e) {
   e.preventDefault();
   const username = document.getElementById('username').value.trim();
@@ -183,14 +190,14 @@ function signUp(e) {
   const pwd = document.getElementById('password').value;
   const pfp = document.getElementById('pfp').value;
 
-  if (!username || !email.includes('@')) return alert('Fill everything correctly');
+  if (!username || !email.includes('@')) return alert('Fill everything!');
 
   let accounts = JSON.parse(localStorage.getItem('accounts')||'[]');
   if (accounts.find(a => a.username === username || a.email === email)) return alert('Username or email taken');
 
   accounts.push({username, email, pwd, pfp});
   localStorage.setItem('accounts', JSON.stringify(accounts));
-  alert('Signed up! You can log in now');
+  alert('Signed up! Now log in');
   showAccounts();
 }
 
@@ -201,26 +208,27 @@ function login(e) {
   const accounts = JSON.parse(localStorage.getItem('accounts')||'[]');
   const user = accounts.find(a => a.email === email && a.pwd === pwd);
   if (user) {
-    localStorage.loggedIn = JSON.stringify(user);
-    alert('Logged in as ' + user.username + '!');
+    localStorage.setItem('loggedIn', JSON.stringify(user));
+    alert('Welcome back, ' + user.username + '!');
     showOrders();
-  } else alert('Wrong credentials');
+  } else alert('Wrong email or password');
 }
 
 function showAccounts() {
   const list = document.getElementById('accounts-list');
+  if (!list) return;
   const accounts = JSON.parse(localStorage.getItem('accounts')||'[]');
   list.innerHTML = accounts.map(a => `
-    <div class="list-group-item d-flex align-items-center" onclick='localStorage.loggedIn=JSON.stringify(${JSON.stringify(a)});alert("Logged in as ${a.username}!");showOrders()'>
-      <img src="${a.pfp" class="pfp me-3">
+    <div class="list-group-item d-flex align-items-center" style="cursor:pointer" onclick='localStorage.setItem("loggedIn",JSON.stringify(${JSON.stringify(a)}));alert("Logged in as ${a.username}!");showOrders()'>
+      <img src="${a.pfp}" class="pfp">
       <div>
         <strong>${a.username}</strong><br>
-        <small>${a.email} • click to log in</small>
+        <small>${a.email}</small>
       </div>
     </div>`).join('');
 }
 
-// Show back-to-top only when needed
+// Back-to-top button
 window.onscroll = () => document.querySelector('.back-top').style.display = window.scrollY > 300 ? 'block' : 'none';
 </script>
 </body>
